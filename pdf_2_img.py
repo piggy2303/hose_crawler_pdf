@@ -13,23 +13,31 @@ list_pdf = os.listdir('./data/')
 file_error = open("result_error.txt", "a+")
 
 list_jpg = os.listdir("./data_jpg/")
+set_jpg = set()
+for i in list_jpg:
+    i = i.split("_")[1]
+    i = int(i)
+    print(i)
+    set_jpg.add(i)
+
 
 print(list_pdf)
 
 for f in list_pdf:
-    ff = "./data/"+f
     try:
-        print("doing ", f)
-        images = convert_from_path(ff)
+        if int(f.split("_")[1].split(".")[0]) in set_jpg:
+            print("skip", f)
+        else:
+            print("doing ", f)
+            ff = "./data/"+f
+            images = convert_from_path(ff)
 
-        for i, image in enumerate(images):
-            newfilename = f[:-4] + "_page" + str(i + 1) + '.jpg'
-            if newfilename not in list_jpg:
+            for i, image in enumerate(images):
+                newfilename = f[:-4] + "_page" + str(i + 1) + '.jpg'
                 newfilename = './data_jpg/' + newfilename
                 print("saving ", newfilename)
                 image = image.save(newfilename)
-            else:
-                print("done ", newfilename)
+
     except Exception as error:
         error = str(error)
         print(error)
