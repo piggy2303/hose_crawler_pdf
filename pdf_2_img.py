@@ -10,6 +10,7 @@ from pdf2image.exceptions import (
 )
 
 list_pdf = os.listdir('./data/')
+count_all = len(list_pdf)
 file_error = open("result_error.txt", "a+")
 
 list_jpg = os.listdir("./data_jpg/")
@@ -23,11 +24,14 @@ for i in list_jpg:
 
 print(list_pdf)
 
+count = 0
+
 for f in list_pdf:
     try:
         if int(f.split("_")[1].split(".")[0]) in set_jpg:
             print("skip", f)
         else:
+            print(count, count_all)
             print("doing ", f)
             ff = "./data/"+f
             images = convert_from_path(ff)
@@ -43,6 +47,8 @@ for f in list_pdf:
         print(error)
         file_error.write(f+"\n")
         file_error.write(error+'\n')
+
+    count = count + 1
 
 
 file_error.close()
